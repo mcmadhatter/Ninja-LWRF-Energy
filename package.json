@@ -1,0 +1,12 @@
+{
+  "name": "LWRF-Energy",
+  "version": "0.0.1",
+  "description": "Lightwave RF energy monitoring (requires an Lightwave RF wifi link and energy monitor)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/mcmadhatter/Ninja-LWRF-Energy",
+  "author": "mcmadhatter",
+  "license": "BSD"
+}
