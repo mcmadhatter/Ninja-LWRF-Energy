@@ -45,7 +45,13 @@ function myDriver(opts,app) {
     }
 
     // Register a device
-    self.emit('register', new Device());
+    /* Todo - this needs changing to use the drive config, or auto get data from LWRF website.
+      Below is an exmaple to set up the energy monitor, and a couple of Lights/sockets (if they are un commented )
+      To add more, just cut and paste the   //  self.emit('register', new Device("Light", "R3D5")); and change the 
+      r and d numbers to match your room and device.*/
+    self.emit('register', new Device("Energy","0000"));
+    //self.emit('register', new Device("Light", "R3D5"));
+   // self.emit('register', new Device("Light", "R1D1"));
   });
 };
 
