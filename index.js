@@ -1,6 +1,7 @@
 var Device = require('./lib/lwrf-energy')
   , util = require('util')
   , stream = require('stream')
+  , dgram = require('dgram')
   , configHandlers = require('./lib/config-handlers');
 
 // Give our driver a stream interface
@@ -81,6 +82,34 @@ myDriver.prototype.config = function(rpc,cb) {
     return cb(true);
   }
 };
+
+myDriver.prototype.registerWithWifiLink = function()
+{
+  console.log('Registering NinjaBlock with WiFi Link');
+  var broadcastAddress = "255.255.255.255";
+  var message = new Buffer("693,!R1Fa");
+
+  var client = dgram.createSocket("udp4");
+  client.bind(9761);
+  client.setBroadcast(true);
+
+  client.send(message, 0, message.length, 9760, broadcastAddress, function(err, bytes)
+  {
+    if(err) 
+    {
+      console.log('LWRF err ', err);
+    }
+    else
+    {
+       console.log('Registering NinjaBlock with WiFi Link Complete');
+    }
+    client.close();
+
+  });
+};
+
+
+
 
 
 // Export it
