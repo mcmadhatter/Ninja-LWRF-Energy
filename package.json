@@ -8,5 +8,8 @@
   },
   "repository": "https://github.com/mcmadhatter/Ninja-LWRF-Energy",
   "author": "mcmadhatter",
-  "license": "BSD"
+  "license": "BSD",
+  "dependencies": {
+    "request": ">= 2.27.0"
+  }
 }
