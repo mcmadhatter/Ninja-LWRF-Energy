@@ -1,4 +1,5 @@
 var Device = require('./lib/lwrf-energy')
+  , configLWRF = require('./lib/lwrf-config')
   , util = require('util')
   , stream = require('stream')
   , dgram = require('dgram')
@@ -32,27 +33,42 @@ var HELLO_WORLD_ANNOUNCEMENT = {
 function myDriver(opts,app) {
 
   var self = this;
+  this._log = app.log;
+  this._opts = opts;
 
+  if ( !this._opts.deviceList ) {
+    this._opts.deviceList = [];
+  }
+ 
+
+  if ( !this._opts.gotConfig ) {
+    this._opts.gotConfig = false;
+ 
+  }
+
+    if ( !this._opts.test ) {
+    this._opts.test = true;
+ 
+  }
+   this.registeredDevices = {};
+
+ 
   app.on('client::up',function(){
 
     // The client is now connected to the Ninja Platform
+    // Register a device
+   
+    if(opts.gotConfig == true)
+    {
+  
+      for ( var i = 0; i < opts.deviceList.length; i++ )
+      {
+        self.emit('register', new Device(opts.deviceList[i].type, opts.deviceList[i].id, opts.deviceList[i].name));
+      }
 
-    // Check if we have sent an announcement before.
-    // If not, send one and save the fact that we have.
-    if (!opts.hasSentAnnouncement) {
-      self.emit('announcement',HELLO_WORLD_ANNOUNCEMENT);
-      opts.hasSentAnnouncement = true;
-      self.save();
+      self.emit('register', new Device("Energy","0000"));
     }
 
-    // Register a device
-    /* Todo - this needs changing to use the drive config, or auto get data from LWRF website.
-      Below is an exmaple to set up the energy monitor, and a couple of Lights/sockets (if they are un commented )
-      To add more, just cut and paste the   //  self.emit('register', new Device("Light", "R3D5")); and change the 
-      r and d numbers to match your room and device.*/
-    self.emit('register', new Device("Energy","0000"));
-    //self.emit('register', new Device("Light", "R3D5"));
-   // self.emit('register', new Device("Light", "R1D1"));
   });
 };
 
@@ -69,18 +85,26 @@ function myDriver(opts,app) {
 myDriver.prototype.config = function(rpc,cb) {
 
   var self = this;
-  // If rpc is null, we should send the user a menu of what he/she
-  // can do.
-  // Otherwise, we will try action the rpc method
+
   if (!rpc) {
     return configHandlers.menu.call(this,cb);
   }
-  else if (typeof configHandlers[rpc.method] === "function") {
-    return configHandlers[rpc.method].call(this,rpc.params,cb);
+
+  switch (rpc.method) {
+    /* configuring the hub */
+    case 'registerWithWifiLink':
+      return configHandlers.registerWithWifiLink.call(this,rpc.params,cb);
+      break;
+    case 'getExistingConfig':
+      return configHandlers.getExistingConfig.call(this,rpc.params,cb);
+      break;
+    
+
+    
+    /* */
+    default: return cb(true); break;
   }
-  else {
-    return cb(true);
-  }
+   
 };
 
 myDriver.prototype.registerWithWifiLink = function()
@@ -97,7 +121,7 @@ myDriver.prototype.registerWithWifiLink = function()
   {
     if(err) 
     {
-      console.log('LWRF err ', err);
+      console.log('Registering NinjaBlock with WiFi Link Failed:', err);
     }
     else
     {
@@ -109,8 +133,44 @@ myDriver.prototype.registerWithWifiLink = function()
 };
 
 
+myDriver.prototype.getExistingConfig = function(email_address, pin_number)
+{
+ var self = this;
+
+  configLWRF.fetchConfigurationFromLightwave(email_address, pin_number, function(err, devices)
+  {
+    if(err) 
+    {
+      console.log('LWRF err ', err);
+    }
+    else
+    {
+      
+       console.log('LWRF devices: ', devices);
+
+
+      self._opts.deviceList = [];
+       self._opts.gotConfig = true;
+       for ( var i = 0; i < devices.length; i++ ) {
+        self._opts.deviceList.push(devices[i]);
+      }
+      self.save();
+
+       for ( var i = 0; i < self._opts.deviceList.length; i++ )
+      {
+        self.emit('register', new Device(self._opts.deviceList[i].type, self._opts.deviceList[i].id, self._opts.deviceList[i].name));
+      }
+     
+    }
+
+  });
+
+}
+
 
 
 
 // Export it
 module.exports = myDriver;
+
+
