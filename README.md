@@ -11,7 +11,9 @@ Currently only the following features are supported,
 * On/Off light switches
 * The energy monitor
 
-To register light switches/sockets currently requires editing index.js, to add another device cut and paste this
+The Driver -> Settings menu for the LWRF-Energy allows you to parse your configuration information from the Lightwave RF website.
+
+Alternatively o register light switches/sockets currently requires editing index.js, to add another device cut and paste this
 
 self.emit('register', new Device("Light", "R3D5"));
 
@@ -21,8 +23,6 @@ and change the R and D numbers to match the room and device on the LWRF Wifi Lin
 
 Todo
 =======
-* Add the rest of the Lightwave RF actuator types.
-* Add support for getting your personalised config from the LWRF website and storing it in the ninja config.
 * Add some new Gists to control LWRF objects
 * Add support for 433Mhz Lightwave RF devices without needing to use udp via the wifi box.
 * Tidy up the code.
