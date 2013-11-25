@@ -63,10 +63,10 @@ function myDriver(opts,app) {
   
       for ( var i = 0; i < opts.deviceList.length; i++ )
       {
-        self.emit('register', new Device(opts.deviceList[i].type, opts.deviceList[i].id, opts.deviceList[i].name));
+        self.emit('register', new Device(this, opts.deviceList[i].type, opts.deviceList[i].id, opts.deviceList[i].name));
       }
 
-      self.emit('register', new Device("Energy","0000"));
+      self.emit('register', new Device(this,"Energy","0000", "Energy Monitor"));
     }
 
   });
