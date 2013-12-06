@@ -23,6 +23,7 @@ and change the R and D numbers to match the room and device on the LWRF Wifi Lin
 
 Todo
 =======
-* Add some new Gists to control LWRF objects
+
+
 * Add support for 433Mhz Lightwave RF devices without needing to use udp via the wifi box.
 * Tidy up the code.

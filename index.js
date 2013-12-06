@@ -3,6 +3,7 @@ var Device = require('./lib/lwrf-energy')
   , util = require('util')
   , stream = require('stream')
   , dgram = require('dgram')
+  , sleep = require('sleep')
   , configHandlers = require('./lib/config-handlers');
 
 // Give our driver a stream interface
@@ -15,6 +16,10 @@ var HELLO_WORLD_ANNOUNCEMENT = {
     { "type": "paragraph",    "text": "The hello world driver has been loaded. You should not see this message again." }
   ]
 };
+
+
+/* for a lightswicth gist try https://gist.github.com/mcmadhatter/73a95b9ebe2b8f5f5b34 */
+/* for a switch gist try https://gist.github.com/mcmadhatter/23f29dc81e2c3d029212 */
 
 /**
  * Called when our client starts up
@@ -151,14 +156,16 @@ myDriver.prototype.getExistingConfig = function(email_address, pin_number)
 
       self._opts.deviceList = [];
        self._opts.gotConfig = true;
-       for ( var i = 0; i < devices.length; i++ ) {
+
+      for ( var i = 0; i < devices.length; i++ ) {
         self._opts.deviceList.push(devices[i]);
       }
       self.save();
 
        for ( var i = 0; i < self._opts.deviceList.length; i++ )
       {
-        self.emit('register', new Device(self._opts.deviceList[i].type, self._opts.deviceList[i].id, self._opts.deviceList[i].name));
+        sleep.sleep(1);
+        self.emit('register', new Device(self, self._opts.deviceList[i].type, self._opts.deviceList[i].id, self._opts.deviceList[i].name));
       }
      
     }
