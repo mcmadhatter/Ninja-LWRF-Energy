@@ -39,34 +39,38 @@ function myDriver(opts,app) {
   if ( !this._opts.deviceList ) {
     this._opts.deviceList = [];
   }
- 
+
 
   if ( !this._opts.gotConfig ) {
     this._opts.gotConfig = false;
- 
+
   }
 
     if ( !this._opts.test ) {
     this._opts.test = true;
- 
+
   }
    this.registeredDevices = {};
 
- 
+
   app.on('client::up',function(){
 
     // The client is now connected to the Ninja Platform
     // Register a device
-   
+
     if(opts.gotConfig == true)
     {
-  
+
       for ( var i = 0; i < opts.deviceList.length; i++ )
       {
         self.emit('register', new Device(this, opts.deviceList[i].type, opts.deviceList[i].id, opts.deviceList[i].name));
       }
 
-      self.emit('register', new Device(this,"Energy","0000", "Energy Monitor"));
+      //self.emit('register', new Device(this,"Energy","0000", "Energy Monitor"));
+      self.emit('register', new Device("Light","R1D1"));
+      self.emit('register', new Device("Light","R1D2"));
+      self.emit('register', new Device("Light","R1D3"));
+      self.emit('register', new Device("Light","R1D4"));
     }
 
   });
@@ -98,13 +102,13 @@ myDriver.prototype.config = function(rpc,cb) {
     case 'getExistingConfig':
       return configHandlers.getExistingConfig.call(this,rpc.params,cb);
       break;
-    
 
-    
+
+
     /* */
     default: return cb(true); break;
   }
-   
+
 };
 
 myDriver.prototype.registerWithWifiLink = function()
@@ -119,7 +123,7 @@ myDriver.prototype.registerWithWifiLink = function()
 
   client.send(message, 0, message.length, 9760, broadcastAddress, function(err, bytes)
   {
-    if(err) 
+    if(err)
     {
       console.log('Registering NinjaBlock with WiFi Link Failed:', err);
     }
@@ -139,13 +143,13 @@ myDriver.prototype.getExistingConfig = function(email_address, pin_number)
 
   configLWRF.fetchConfigurationFromLightwave(email_address, pin_number, function(err, devices)
   {
-    if(err) 
+    if(err)
     {
       console.log('LWRF err ', err);
     }
     else
     {
-      
+
        console.log('LWRF devices: ', devices);
 
 
@@ -160,7 +164,7 @@ myDriver.prototype.getExistingConfig = function(email_address, pin_number)
       {
         self.emit('register', new Device(self._opts.deviceList[i].type, self._opts.deviceList[i].id, self._opts.deviceList[i].name));
       }
-     
+
     }
 
   });
