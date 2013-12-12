@@ -51,7 +51,7 @@ Now that the NinjaBlock driver is installed you will need to configure your Ninj
 
 There are two ways to make your Lightwave RF devices visible in the NinjaBlock dashboard.
 
-### 1. Import from LightwaveRF Website:
+###1. Import from LightwaveRF Website
 
 This will only work if you have setup your devices using LightwaveRF and have saved your settings to the LightwaveRF server.
 
@@ -61,8 +61,9 @@ This will only work if you have setup your devices using LightwaveRF and have sa
   4. Enter your email address and PIN.
   5. Click `get existing config`.
 
-### 2.
-Alternatively o register light switches/sockets currently requires editing index.js, to add another device cut and paste this
+###2. Edit the index.js file
+
+Alternatively to register light switches/sockets currently requires editing index.js, to add another device cut and paste this
 
 self.emit('register', new Device("Light", "R3D5"));
 
