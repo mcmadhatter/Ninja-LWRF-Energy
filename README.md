@@ -19,7 +19,7 @@ self.emit('register', new Device("Light", "R3D5"));
 
 and change the R and D numbers to match the room and device on the LWRF Wifi Link box.
 
-
+#Installation
 
 To Run on a ninja block:
 ```
@@ -38,19 +38,11 @@ If you want to look for errors you might want to check out the log file:
 ```
 tail -f /var/log/ninjablock.log
 ```
-In the browser goto:
-
-https://a.ninja.is/home
-
-Click drivers
-
-You should see Lightwave RF listed -
-
-You then need to click the configure button.
-
-In the screen that opens Click Register
-
-Then look at your Lightwave RF WiFi box and click yes to add the device.
+1. Browse to:  https://a.ninja.is/home
+2. Click drivers
+3. Click the configure button next to Ninja-LWRF-Energy item.
+4. Click `Register` in the window that opens.
+5. On your Lightwave RF WiFi box click yes to add the device.
 
 Todo
 =======
