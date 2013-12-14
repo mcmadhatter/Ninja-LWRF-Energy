@@ -119,22 +119,25 @@ myDriver.prototype.registerWithWifiLink = function()
   var message = new Buffer("693,!R1Fa");
 
   var client = dgram.createSocket("udp4");
-  client.bind(9761);
-  client.setBroadcast(true);
-
-  client.send(message, 0, message.length, 9760, broadcastAddress, function(err, bytes)
-  {
-    if(err) 
+  client.on("listening",function () {
+    client.setBroadcast(true);
+    client.send(message, 0, message.length, 9760, broadcastAddress, function(err, bytes)
     {
-      console.log('Registering NinjaBlock with WiFi Link Failed:', err);
-    }
-    else
-    {
-       console.log('Registering NinjaBlock with WiFi Link Complete');
-    }
-    client.close();
-
+      if(err) 
+      {
+        console.log('Registering NinjaBlock with WiFi Link Failed:', err);
+      }
+      else
+      {
+         console.log('Registering NinjaBlock with WiFi Link Complete');
+      }
+      client.close();
+    });  
   });
+
+  client.bind();
+
+  
 };
 
 
