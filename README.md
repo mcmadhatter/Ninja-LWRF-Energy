@@ -43,7 +43,7 @@ Now that the NinjaBlock driver is installed you will need to configure your Ninj
 2. Click drivers
 3. Click the configure button next to Ninja-LWRF-Energy item.
 4. Click `Register` in the window that opens.
-5. On your Lightwave RF WiFi box click yes to add the device.
+5. On your Lightwave RF WiFi box click yes to add the device. (it will appear as a <<- Yes    No->>   option.
 
 
 
@@ -51,7 +51,7 @@ Now that the NinjaBlock driver is installed you will need to configure your Ninj
 
 There are two ways to make your Lightwave RF devices visible in the NinjaBlock dashboard.
 
-###1. Import from LightwaveRF Website
+###1. Import from LightwaveRF Website (easiest in theory)
 
 This will only work if you have setup your devices using LightwaveRF and have saved your settings to the LightwaveRF server.
 
